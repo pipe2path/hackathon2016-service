@@ -1,0 +1,26 @@
+{
+  "name": "hackathon2016",
+  "version": "1.0.0",
+  "description": "Bathroom occupancy IoT",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pipe2path/hackathon2016Loo.git"
+  },
+  "keywords": [
+    "hackathon",
+    "bathroom"
+  ],
+  "author": "TeamLoo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pipe2path/hackathon2016Loo/issues"
+  },
+  "homepage": "https://github.com/pipe2path/hackathon2016Loo#readme",
+  "dependencies": {
+    "restify": "^4.1.1"
+  }
+}
