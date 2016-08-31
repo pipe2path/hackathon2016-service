@@ -37,7 +37,7 @@ server.get('/status', function (req, res, cb) {
 	connection.connect();
 	var sql_query = "select * from BathroomStatus bs inner join Bathroom b on bs.bathroomId = b.bathroomId inner join Floor f " +
 				"on b.floorId = f.floorId inner join Gender g on g.genderId = b.genderId ";
-	connection.query(sql_query, functio/n(err, rows, fields) {
+	connection.query(sql_query, function(err, rows, fields) {
 		if (err) throw err;
 
 		res.send(rows);
