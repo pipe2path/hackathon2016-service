@@ -5,7 +5,7 @@ var mysql = require('mysql');
 // create an HTTP server.
 server = restify.createServer();
 // add a route that listens on http://localhost:5000/hello/world
-server.get('/status/:floor', function (req, res, cb) {
+server.get('/status/:id', function (req, res, cb) {
 
 	var connection = mysql.createConnection({
 		host     : 'hackathon2016.db.2259289.hostedresource.com',
@@ -15,8 +15,10 @@ server.get('/status/:floor', function (req, res, cb) {
 	});
 
 	connection.connect();
-	var sql_query = "select bs.status from BathroomStatus bs inner join Bathroom b on bs.bathroomId = b.bathroomId inner join Floor f " +
-				"on b.floorId = f.floorId inner join Gender g on g.genderId = b.genderId where b.floorId = " + req.params.floor ;
+	var sql_query = "select bathroomId, datetimestamp, status from BathroomStatus bs " +
+					"where datetimestamp = (select max(datetimestamp) " +
+					"from BathroomStatus bs2 " +
+					"where bs.bathroomId = bs2.bathroomId) and bs.bathroomId = " + req.params.id ;
 	connection.query(sql_query, function(err, rows, fields) {
 		if (err) throw err;
 		res.send(rows);
