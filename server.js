@@ -32,8 +32,6 @@ server.post('/update', function(req, res, cb){
 	connection.connect();
 
 	var statusData = {};
-	// statusData.id = req.body.id;
-	// statusData.status = req.body.status;
 	statusData.id = req.params.id;
 	statusData.status = req.params.status;
 	var datetimestamp = (new Date()).toISOString().substring(0, 19).replace('T', ' ').toLocaleString();
