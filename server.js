@@ -27,7 +27,7 @@ server.get('/status/:id', function (req, res, cb) {
 	});
 });
 
-server.put('/update', function(req, res, cb){
+server.post('/update', function(req, res, cb){
 	var connection = getConnection();
 	connection.connect();
 
