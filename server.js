@@ -10,6 +10,7 @@ server.use(restify.queryParser());
 server.use(restify.bodyParser());
 server.use(restify.CORS());
 
+// status service is used to inquire about bathroom status
 server.get('/status/:id', function (req, res, cb) {
 
 	var connection = getConnection();
@@ -24,6 +25,7 @@ server.get('/status/:id', function (req, res, cb) {
 	});
 });
 
+// update service is used when the door is opened or closed
 server.post('/update', function(req, res, cb){
 	var connection = getConnection();
 	connection.connect();
