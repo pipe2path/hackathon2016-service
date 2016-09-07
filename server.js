@@ -1,6 +1,3 @@
-
-
-
 // require the restify library.
 var restify = require('restify');
 // sql server library
