@@ -33,7 +33,9 @@ server.post('/update', function(req, res, cb){
 	var statusData = {};
 	statusData.id = req.params.id;
 	statusData.status = req.params.status;
-	var datetimestamp = (new Date()).toISOString().substring(0, 19).replace('T', ' ').toLocaleString();
+	var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+	var datetimestamp = (new Date(Date.now() - tzoffset)).toISOString().slice(0,-1);
+	//var datetimestamp = (new Date()).toLocaleString().substring(0, 19).replace('T', ' ');
 
 	res.setHeader('Access-Control-Allow-Origin','*');
 
