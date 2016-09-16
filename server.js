@@ -1,3 +1,6 @@
+
+
+
 // require the restify library.
 var restify = require('restify');
 // sql server library
@@ -10,7 +13,6 @@ server.use(restify.queryParser());
 server.use(restify.bodyParser());
 server.use(restify.CORS());
 
-// status service is used to inquire about bathroom status
 server.get('/status/:id', function (req, res, cb) {
 
 	var connection = getConnection();
@@ -25,17 +27,41 @@ server.get('/status/:id', function (req, res, cb) {
 	});
 });
 
-// update service is used when the door is opened or closed
+server.get('/cleaningstatus/:id', function (req, res, cb) {
+
+	var connection = getConnection();
+	connection.connect();
+	var sql_query = "select bathroomcleaningstatusid, bathroomId, crewid, status, cleaningTime " + 
+			"from BathroomCleaningStatus bcs where bathroomId = " + req.params.id;
+	connection.query(sql_query, function(err, rows, fields) {
+		if (err) throw err;
+		res.send(rows);
+	});
+});
+
+// get bathroom info from floor and gender
+server.get('/bathroom/', function (req, res, cb) {
+
+	var connection = getConnection();
+	connection.connect();
+	var sql_query = "select bathroomId, floorId, genderId from Bathroom " +
+		"where floorId = " + req.params.floorId + " and genderId = " + req.params.genderId;
+	connection.query(sql_query, function(err, rows, fields) {
+		if (err) throw err;
+		res.send(rows);
+	});
+});
+
 server.post('/update', function(req, res, cb){
 	var connection = getConnection();
 	connection.connect();
 
 	var statusData = {};
+	//statusData.id = req.body.id;
+	//statusData.status = req.body.status;
 	statusData.id = req.params.id;
 	statusData.status = req.params.status;
-	var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
-	var datetimestamp = (new Date(Date.now() - tzoffset)).toISOString().slice(0,-1);
-	//var datetimestamp = (new Date()).toLocaleString().substring(0, 19).replace('T', ' ');
+	var datetimestamp = (new Date()).toISOString().substring(0, 19).replace('T', ' ').toLocaleString();
 
 	res.setHeader('Access-Control-Allow-Origin','*');
 
@@ -45,6 +71,24 @@ server.post('/update', function(req, res, cb){
 		res.send("updated");
 	});
 })
+
+server.post('/updatecleaning', function(req, res, cb){
+	var connection = getConnection();
+	connection.connect();
+
+	var statusData = {};
+	statusData.id = req.params.id;
+	statusData.status = req.params.status;
+
+	res.setHeader('Access-Control-Allow-Origin','*');
+
+	var sql_query = "update BathroomCleaningStatus set bathroomId = " + statusData.id + ", status = " + statusData.status;
+	connection.query(sql_query, function(err, rows, fields) {
+		if (err) throw err;
+		res.send("updated");
+	});
+})
+
 
 function getConnection(){
 	var connection = mysql.createConnection({
